@@ -25,11 +25,11 @@ import {
 } from "lucide-react";
 
 import profileImg from "@/assets/profile.jpg";
-import projPanorama from "@/assets/project-panorama.jpg";
-import projChess from "@/assets/project-chess.jpg";
-import projWallet from "@/assets/project-wallet.jpg";
+import projPanorama from "@/assets/project-panorama.png";
+import projChess from "@/assets/project-chess.png";
+import projWallet from "@/assets/project-wallet.png";
 import projEduEcom from "@/assets/project-edusathi-ecom.jpg";
-import projEdu from "@/assets/project-edusathi.jpg";
+import projEdu from "@/assets/project-edusathi.png";
 
 /* ----------------------------- Helpers ----------------------------- */
 
@@ -37,6 +37,25 @@ const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
 };
+
+async function downloadResume(url: string, filename: string) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Network response was not ok');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    // Fallback: open the file directly (useful if file is served from public/)
+    window.open(url, '_blank');
+  }
+}
 
 function Section({
   id,
@@ -112,7 +131,7 @@ function Nav() {
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground">
             S
           </span>
-          <span className="hidden sm:inline">Sudipta<span className="text-muted-foreground">.dev</span></span>
+          <span className="hidden sm:inline">Sudipta Samanta<span className="text-muted-foreground"></span></span>
         </a>
         <ul className="hidden items-center gap-1 md:flex">
           {navItems.map((n) => (
@@ -269,8 +288,13 @@ function Hero() {
               View Projects
             </a>
             <a
-              href="#contact"
+              href="/resume.pdf"
+              onClick={(e) => {
+                e.preventDefault();
+                downloadResume('/resume.pdf', 'Sudipta-Samanta-Resume.pdf');
+              }}
               className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Download Resume"
             >
               <Download className="h-4 w-4" /> Resume
             </a>
@@ -307,15 +331,15 @@ function Hero() {
           className="relative mx-auto w-full max-w-[420px]"
         >
           <div className="absolute -inset-6 -z-10 rounded-full bg-gradient-to-br from-[var(--cyan-glow)] via-[var(--blue-glow)] to-[var(--violet-glow)] opacity-30 blur-3xl animate-pulse-glow" />
-          <div className="gradient-border relative aspect-square overflow-hidden rounded-[2rem] animate-float">
+          <div className="gradient-border relative aspect-square overflow-hidden rounded-full animate-float">
             <img
               src={profileImg}
               alt="Portrait of Sudipta Samanta"
               width={768}
               height={768}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-center"
             />
-            <div className="gradient-border-inner rounded-[2rem]" />
+            <div className="gradient-border-inner rounded-full" />
           </div>
 
           {/* Floating chips */}
@@ -615,30 +639,40 @@ const projects = [
     desc: "Complete visual refresh for an export business — improved hierarchy, modern hero and a faster, friendlier experience.",
     tags: ["React", "Tailwind", "UI Redesign"],
     image: projPanorama,
+    demo: "https://panorama-exports.vercel.app",
+    code: "https://github.com/sudiptasamanta917/Panorama-Exports"
   },
   {
     title: "Dynamo Chess — Platform Redesign",
     desc: "Rebuilt the platform's design language and fixed core functionality issues across the user flow.",
     tags: ["React", "Node.js", "UX"],
     image: projChess,
+    demo: "https://dynamo-chess-nine.vercel.app",
+    code: "https://github.com/sudiptasamanta917/Dynamo-Chess" 
   },
   {
     title: "Wallet Management System",
-    desc: "Track earnings, expenses, buying history and total balance — a clean personal finance dashboard.",
+    desc: "Track earnings, expenses, spending history and total balance — a clean personal finance dashboard.",
     tags: ["MERN", "MongoDB", "Charts"],
     image: projWallet,
-  },
-  {
-    title: "Edusathi — Ecommerce Platform",
-    desc: "Built ecommerce functionality and responsive UI for an education marketplace.",
-    tags: ["React", "Express", "MongoDB"],
-    image: projEduEcom,
+    demo: "https://sudiptasamanta917.github.io/Wallet_Project",
+    code: "https://github.com/sudiptasamanta917/Wallet_Project"
   },
   {
     title: "Edusathi — Website Redesign",
     desc: "Improved UI, responsiveness and engagement across the platform's marketing surface.",
     tags: ["UI", "Responsive", "Redesign"],
     image: projEdu,
+    demo: "https://edusathi.net",
+    code: "https://github.com/sudiptasamanta917/edusathi_new_project"
+  },
+  {
+    title: "Edusathi — Ecommerce Platform",
+    desc: "Built ecommerce functionality and responsive UI for an education marketplace.",
+    tags: ["React", "Express", "MongoDB"],
+    image: projEduEcom,
+    demo: "",
+    code: ""
   },
 ];
 
@@ -682,10 +716,10 @@ function Projects() {
               <h3 className="mt-3 text-lg font-semibold">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
               <div className="mt-5 flex items-center gap-2">
-                <a href="#" className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-transform hover:scale-[1.03]">
+                <a href={p.demo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-transform hover:scale-[1.03]">
                   <ExternalLink className="h-3.5 w-3.5" /> Live demo
                 </a>
-                <a href="https://github.com/sudiptasamanta917" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
+                <a href={p.code} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
                   <Github className="h-3.5 w-3.5" /> Code
                 </a>
               </div>
