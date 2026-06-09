@@ -2,12 +2,12 @@ import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Download, Linkedin, Github, GraduationCap, Brain, Coffee, Palette, Code2, Globe, Layers, Server, Smartphone, RefreshCw, Sparkles, ExternalLink, Mail, Phone, MapPin, Send, ArrowUp } from "lucide-react";
-const profileImg = "/assets/profile-CuWSq2ub.jpg";
-const projPanorama = "/assets/project-panorama-CAJXHOSc.png";
-const projChess = "/assets/project-chess-w8xZSz6S.png";
-const projWallet = "/assets/project-wallet-dWzvqm-a.png";
-const projEduEcom = "/assets/project-edusathi-ecom-KAKzU6Cq.jpg";
-const projEdu = "/assets/project-edusathi-CoweLco_.png";
+const profileImg = "/ether-dev-studio/assets/profile-CuWSq2ub.jpg";
+const projPanorama = "/ether-dev-studio/assets/project-panorama-CAJXHOSc.png";
+const projChess = "/ether-dev-studio/assets/project-chess-w8xZSz6S.png";
+const projWallet = "/ether-dev-studio/assets/project-wallet-dWzvqm-a.png";
+const projEduEcom = "/ether-dev-studio/assets/project-edusathi-ecom-KAKzU6Cq.jpg";
+const projEdu = "/ether-dev-studio/assets/project-edusathi-CoweLco_.png";
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
